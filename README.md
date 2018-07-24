@@ -1,16 +1,19 @@
 # Secure DTI
 
-## This package contains the client software for an end-to-end
-## multiparty computation (MPC) protocol for secure DTI prediction.
+## Realizing private and practical pharmacological collaboration
 
-**Dependencies:**
+This package contains the client software for an end-to-end multiparty computation (MPC) protocol for secure DTI prediction.
+
+Once all of the data is downloaded and the code is built, the file `main.sh` documents the entire work flow.
+
+### Dependencies:
 
 clang++ compiler (3.9; https://clang.llvm.org/)
 GMP library (6.1.2; https://gmplib.org/)
 libssl-dev package (1.0.2g-1ubuntu11.2)
 NTL package (10.3.0; http://www.shoup.net/ntl/)
 
-**Notes on NTL:**
+### Notes on NTL:
 
 We made a few modifications to NTL for our random streams.
 Copy the contents of `code/NTL_mod/` into the NTL source
@@ -22,7 +25,7 @@ Copy `ZZ.h` into `NTL_PACKAGE_DIR/include/NTL/`
 In addition, we recommend setting `NTL_THREAD_BOOST=on`
 during the configuration of NTL to enable thread-boosting.
 
-**Compilation:**
+### Compilation:
 
 First, update the paths in `code/Makefile`:
 
@@ -38,7 +41,7 @@ This will create three executables of interest:
 `bin/MaskDnn`
 `bin/DnnClient`
 
-**How to run:**
+### How to run:
 
 Our MPC protocol consists of four entities: SP, CP0, CP1, and CP2.
 
@@ -55,7 +58,7 @@ and `3=SP`.
 These multiple instances of the client will interact over the
 network to jointly carry out the MPC protocol.
 
-#### Step 0: Generate DTI Features and Labels
+### Step 0: Generate DTI Features and Labels
 
 As described in the paper, we encode a drug-target interaction as a
 binary vector which is fed into a neural network model that predicts
@@ -66,7 +69,7 @@ The `bin/generate_batches.sh` helper script will take drug-target
 interactions and map them to the corresponding bitvectors. The data
 is split up into file batches of 20,000 features each.
 
-#### Step 1: Setup Shared Random Keys
+### Step 1: Setup Shared Random Keys
 
 Secure communication channels needed for the overall protocol are:
 
@@ -87,7 +90,7 @@ We provide pre-generated keys in the `key/` directory. In practice,
 each party should have the keys for only the channels
 they are involved in.
 
-#### Step 2: Setup Parameters
+### Step 2: Setup Parameters
 
 We provide example parameter settings in:
 
@@ -101,7 +104,16 @@ For a test run, update the following parameters and leave the rest:
 PORT_*
 IP_ADDR_*
 
-#### Step 3: Setup Input Data 
+### Step 3: Setup Input Data
+
+We provide data from the STITCH 5.0 data set of drug-target interactions
+at http://secure-dti.csail.mit.edu/data.tar.gz. Download and unpack this
+with the commands:
+
+```
+wget http://secure-dti.csail.mit.edu/data.tar.gz
+tar xvf data.tar.gz
+```
 
 On the machine where the SP instance will be running, the data set
 should be available in plaintext. The data should have been split up
@@ -113,7 +125,7 @@ Each row of the `FEATURES_FILE` should contain the feature vector for
 a drug-target pair. The `LABELS_FILE` will label the drug-target pair
 in the corresponding row as interactive (1) or non-interactive (0).
 
-#### Step 4: Initial Data Sharing
+### Step 4: Initial Data Sharing
 
 On the respective machines, `cd` into `mpc/code/` and run `MaskDnn`
 for each party in the following order:
@@ -128,7 +140,7 @@ The resulting shares are stored in the same directory as the
 features and the labels, and can be transmitted using a file
 sharing protocol such as FTP.
 
-#### Step 5: Secure DTI Prediction
+### Step 5: Secure DTI Prediction
 
 On the respective machines, `cd` into `mpc/code/` and run `DnnClient`
 for each party (excluding SP) in the following order:
@@ -141,7 +153,7 @@ As the model runs, it will output the current model parameters in
 plaintext in the cache/ directory. This can be modified to only
 output the model parameters at the end of model training.
 
-**Contact for questions:**
+### Questions
 
 Brian Hie, brianhie@mit.edu  
 Hoon Cho, hhcho@mit.edu
