@@ -13,6 +13,8 @@ Once all of the data is downloaded and the code is built, the file `main.sh` doc
 - libssl-dev package (1.0.2g-1ubuntu11.2)
 - NTL package (10.3.0; http://www.shoup.net/ntl/)
 
+Code has been tested on Ubuntu 17.04.
+
 ### Notes on NTL:
 
 We made a few modifications to NTL for our random streams.
