@@ -2,7 +2,11 @@
 
 # Example file for general protocol workflow on one machine.
 # Tasks should be split up over multiple machines according
-# as described in the README.
+# to the description in the README.
+
+# Download and unpack data.
+wget http://secure-dti.csail.mit.edu/data.tar.gz
+tar xvf data.tar.gz
 
 # Generate data.
 sh bin/generate_batches_pw.sh
