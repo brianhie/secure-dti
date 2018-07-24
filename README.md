@@ -83,7 +83,8 @@ be named:
 The syntax for running `GenerateKey` is as follows:
 
 ```
-./mpc/code/bin/GenerateKey out.key
+cd mpc/code/
+./bin/GenerateKey out.key
 ```
 
 In addition, generate `global.key` and share it with all parties.
@@ -94,7 +95,7 @@ they are involved in.
 
 ### Step 2: Setup Parameters
 
-We provide example parameter settings in `par/test.par.PARTY_ID.txt`.
+We provide example parameter settings in `mpc/par/test.par.PARTY_ID.txt`.
 
 For more information about each parameter, please consult `mpc/code/param.h`
 and Supplementary Information of our publication.
