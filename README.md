@@ -8,38 +8,38 @@ Once all of the data is downloaded and the code is built, the file `main.sh` doc
 
 ### Dependencies:
 
-clang++ compiler (3.9; https://clang.llvm.org/)
-GMP library (6.1.2; https://gmplib.org/)
-libssl-dev package (1.0.2g-1ubuntu11.2)
-NTL package (10.3.0; http://www.shoup.net/ntl/)
+- clang++ compiler (3.9; https://clang.llvm.org/)
+- GMP library (6.1.2; https://gmplib.org/)
+- libssl-dev package (1.0.2g-1ubuntu11.2)
+- NTL package (10.3.0; http://www.shoup.net/ntl/)
 
 ### Notes on NTL:
 
 We made a few modifications to NTL for our random streams.
-Copy the contents of `code/NTL_mod/` into the NTL source
+Copy the contents of `mpc/code/NTL_mod/` into the NTL source
 directory as follows before compiling it:
 
-Copy `ZZ.cpp` into `NTL_PACKAGE_DIR/src/`
-Copy `ZZ.h` into `NTL_PACKAGE_DIR/include/NTL/`
+- Copy `ZZ.cpp` into `NTL_PACKAGE_DIR/src/`
+- Copy `ZZ.h` into `NTL_PACKAGE_DIR/include/NTL/`
 
 In addition, we recommend setting `NTL_THREAD_BOOST=on`
 during the configuration of NTL to enable thread-boosting.
 
 ### Compilation:
 
-First, update the paths in `code/Makefile`:
+First, update the paths in `mpc/code/Makefile`:
 
-`CPP` points to the clang++ compiler executable.
-`INCPATHS` points to the header files of installed libraries.
-`LDPATH` contains the `.a` files of installed libraries.
+- `CPP` points to the clang++ compiler executable.
+- `INCPATHS` points to the header files of installed libraries.
+- `LDPATH` contains the `.a` files of installed libraries.
 
-To compile, run `make` inside the `code/` directory.
+To compile, run `make` inside the `mpc/code/` directory.
 
 This will create three executables of interest:
 
-`bin/GenerateKey`
-`bin/MaskDnn`
-`bin/DnnClient`
+- `bin/GenerateKey`
+- `bin/MaskDnn`
+- `bin/DnnClient`
 
 ### How to run:
 
@@ -73,16 +73,18 @@ is split up into file batches of 20,000 features each.
 
 Secure communication channels needed for the overall protocol are:
 
-CP0 <-> CP1, CP0 <-> CP2, CP1 <-> CP2, CP1 <-> SP, CP2 <-> SP
+`CP0 <-> CP1`, `CP0 <-> CP2`, `CP1 <-> CP2`, `CP1 <-> SP`, `CP2 <-> SP`
 
 Use GenerateKey to obtain a secret key for each pair, which should
 be named:
 
-P0_P1.key, P0_P2.key, P1_P2.key, P1_P3.key, P2_P3.key
+`P0_P1.key`, `P0_P2.key`, `P1_P2.key`, `P1_P3.key`, `P2_P3.key`
 
 The syntax for running `GenerateKey` is as follows:
 
-./GenerateKey out.key
+```
+./mpc/code/bin/GenerateKey out.key
+```
 
 In addition, generate `global.key` and share it with all parties.
 
@@ -92,17 +94,15 @@ they are involved in.
 
 ### Step 2: Setup Parameters
 
-We provide example parameter settings in:
+We provide example parameter settings in `par/test.par.PARTY_ID.txt`.
 
-par/test.par.PARTY_ID.txt
-
-For more information about each parameter, please consult `code/param.h`
+For more information about each parameter, please consult `mpc/code/param.h`
 and Supplementary Information of our publication.
 
 For a test run, update the following parameters and leave the rest:
 
-PORT_*
-IP_ADDR_*
+- `PORT_*`
+- `IP_ADDR_*`
 
 ### Step 3: Setup Input Data
 
@@ -130,10 +130,10 @@ in the corresponding row as interactive (1) or non-interactive (0).
 On the respective machines, `cd` into `mpc/code/` and run `MaskDnn`
 for each party in the following order:
 
-CP0: `bin/MaskDnn 0 ../par/test.par.0.txt`
-CP1: `bin/MaskDnn 1 ../par/test.par.1.txt`
-CP2: `bin/MaskDnn 2 ../par/test.par.2.txt`
-SP:  `bin/MaskDnn 3 ../par/test.par.3.txt ../test_data/`
+- CP0: `bin/MaskDnn 0 ../par/test.par.0.txt`
+- CP1: `bin/MaskDnn 1 ../par/test.par.1.txt`
+- CP2: `bin/MaskDnn 2 ../par/test.par.2.txt`
+- SP:  `bin/MaskDnn 3 ../par/test.par.3.txt ../test_data/`
 
 During this step, SP computes the secret shares with CP1 and CP2.
 The resulting shares are stored in the same directory as the
@@ -145,12 +145,12 @@ sharing protocol such as FTP.
 On the respective machines, `cd` into `mpc/code/` and run `DnnClient`
 for each party (excluding SP) in the following order:
 
-CP0: `bin/DnnClient 0 ../par/test.par.0.txt`
-CP1: `bin/DnnClient 1 ../par/test.par.1.txt`
-CP2: `bin/DnnClient 2 ../par/test.par.2.txt`
+- CP0: `bin/DnnClient 0 ../par/test.par.0.txt`
+- CP1: `bin/DnnClient 1 ../par/test.par.1.txt`
+- CP2: `bin/DnnClient 2 ../par/test.par.2.txt`
 
 As the model runs, it will output the current model parameters in
-plaintext in the cache/ directory. This can be modified to only
+plaintext in the `mpc/cache/` directory. This can be modified to only
 output the model parameters at the end of model training.
 
 ### Questions
