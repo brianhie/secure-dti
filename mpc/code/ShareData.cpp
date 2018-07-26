@@ -115,7 +115,7 @@ bool mask_data(string data_dir, MPCEnv& mpc) {
 
 int main(int argc, char* argv[]) {
   if (argc < 3) {
-    tcout() << "Usage: Mask party_id param_file [data_dir (for P3/SP)]" << endl;
+    tcout() << "Usage: ShareData party_id param_file [data_dir (for P3/SP)]" << endl;
     return 1;
   }
 

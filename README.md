@@ -40,8 +40,8 @@ To compile, run `make` inside the `mpc/code/` directory.
 This will create three executables of interest:
 
 - `bin/GenerateKey`
-- `bin/Mask`
-- `bin/Client`
+- `bin/ShareData`
+- `bin/TrainSecureDTI`
 
 ### How to run:
 
@@ -134,13 +134,13 @@ in the corresponding row as interactive (1) or non-interactive (0).
 
 ### Step 4: Initial Data Sharing
 
-On the respective machines, `cd` into `mpc/code/` and run `Mask`
+On the respective machines, `cd` into `mpc/code/` and run `bin/ShareData`
 for each party in the following order:
 
-- CP0: `bin/Mask 0 ../par/test.par.0.txt`
-- CP1: `bin/Mask 1 ../par/test.par.1.txt`
-- CP2: `bin/Mask 2 ../par/test.par.2.txt`
-- SP:  `bin/Mask 3 ../par/test.par.3.txt ../test_data/`
+- CP0: `bin/ShareData 0 ../par/test.par.0.txt`
+- CP1: `bin/ShareData 1 ../par/test.par.1.txt`
+- CP2: `bin/ShareData 2 ../par/test.par.2.txt`
+- SP:  `bin/ShareData 3 ../par/test.par.3.txt ../test_data/`
 
 During this step, SP computes the secret shares with CP1 and CP2.
 The resulting shares are stored in the same directory as the
@@ -149,12 +149,12 @@ sharing protocol such as FTP.
 
 ### Step 5: Secure DTI Prediction
 
-On the respective machines, `cd` into `mpc/code/` and run `Client`
+On the respective machines, `cd` into `mpc/code/` and run `bin/TrainSecureDTI`
 for each party (excluding SP) in the following order:
 
-- CP0: `bin/Client 0 ../par/test.par.0.txt`
-- CP1: `bin/Client 1 ../par/test.par.1.txt`
-- CP2: `bin/Client 2 ../par/test.par.2.txt`
+- CP0: `bin/TrainSecureDTI 0 ../par/test.par.0.txt`
+- CP1: `bin/TrainSecureDTI 1 ../par/test.par.1.txt`
+- CP2: `bin/TrainSecureDTI 2 ../par/test.par.2.txt`
 
 As the model runs, it will output the current model parameters in
 plaintext in the `mpc/cache/` directory. This can be modified to only

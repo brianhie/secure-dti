@@ -514,7 +514,7 @@ bool dnn_protocol(MPCEnv& mpc, int pid) {
 
 int main(int argc, char** argv) {
   if (argc < 3) {
-    tcout() << "Usage: DtiClient party_id param_file" << endl;
+    tcout() << "Usage: TrainSecureDTI party_id param_file" << endl;
     return 1;
   }
 
