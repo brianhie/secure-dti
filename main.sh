@@ -9,8 +9,8 @@ wget http://secure-dti.csail.mit.edu/data.tar.gz
 tar xvf data.tar.gz
 
 # Generate data.
-sh bin/generate_batches_pw.sh
-sh bin/generate_batches.sh
+sh bin/generate_batches.sh # Randomly sample negative set (Secure DTI-A).
+sh bin/generate_batches_pw.sh # Control for degree (Secure DTI-B).
 
 cd mpc/
 
