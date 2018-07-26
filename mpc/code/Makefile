@@ -8,7 +8,7 @@ BUILD = build
 PROGS = bin
 
 SRC = crypto.cpp connect.cpp aesstream.cpp mpc.cpp param.cpp
-PROGNAMES = MaskDnn DnnClient GenerateKey
+PROGNAMES = Mask Client GenerateKey
 
 OBJPATHS = $(patsubst %.cpp,$(BUILD)/%.o, $(SRC))
 TESTPATHS = $(addprefix $(PROGS)/, $(PROGNAMES))

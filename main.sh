@@ -25,14 +25,14 @@ code/bin/GenerateKey key/global.key
 cd code/
 
 # Mask data.
-./bin/MaskDnn 0 ../par/test.par.0.txt &
-./bin/MaskDnn 1 ../par/test.par.1.txt &
-./bin/MaskDnn 2 ../par/test.par.2.txt &
-./bin/MaskDnn 3 ../par/test.par.3.txt ../../data/batch/ &
+./bin/Mask 0 ../par/test.par.0.txt &
+./bin/Mask 1 ../par/test.par.1.txt &
+./bin/Mask 2 ../par/test.par.2.txt &
+./bin/Mask 3 ../par/test.par.3.txt ../../data/batch/ &
 wait
 
 # Run protocol.
-./bin/DnnClient 0 ../par/test.par.0.txt &
-./bin/DnnClient 1 ../par/test.par.1.txt &
-./bin/DnnClient 2 ../par/test.par.2.txt &
+./bin/Client 0 ../par/test.par.0.txt &
+./bin/Client 1 ../par/test.par.1.txt &
+./bin/Client 2 ../par/test.par.2.txt &
 wait

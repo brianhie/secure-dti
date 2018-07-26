@@ -40,8 +40,8 @@ To compile, run `make` inside the `mpc/code/` directory.
 This will create three executables of interest:
 
 - `bin/GenerateKey`
-- `bin/MaskDnn`
-- `bin/DnnClient`
+- `bin/Mask`
+- `bin/Client`
 
 ### How to run:
 
@@ -69,7 +69,7 @@ value of 1) or not (0).
 
 The `bin/generate_batches.sh` helper script will take drug-target
 interactions and map them to the corresponding bitvectors. The data
-is split up into file batches of 20,000 features each.
+is split up into file batches of 20,000 training examples each.
 
 ### Step 1: Setup Shared Random Keys
 
@@ -118,11 +118,15 @@ wget http://secure-dti.csail.mit.edu/data.tar.gz
 tar xvf data.tar.gz
 ```
 
+This contains DTI data from [STITCH 5.0](http://stitch.embl.de/), one-hot encoded [Pfam domains](https://pfam.xfam.org/), and [ECFP-4 chemical fingerprints](https://docs.chemaxon.com/display/docs/Extended+Connectivity+Fingerprint+ECFP).
+
 On the machine where the SP instance will be running, the data set
 should be available in plaintext. The data should have been split up
 into multiple file batches as by `bin/generate_batches.sh`. The
 directory prefix of these file batches can be specified using the
 `FEATURES_FILE` and `LABELS_FILE` parameters.
+
+Note that `bin/generate_batches.sh` does not control for the degree of proteins/chemicals in the negative set ("Secure DTI-A" in the paper), whereas `bin/generate_batches_pw.sh` does ("Secure DTI-B").
 
 Each row of the `FEATURES_FILE` should contain the feature vector for
 a drug-target pair. The `LABELS_FILE` will label the drug-target pair
@@ -130,13 +134,13 @@ in the corresponding row as interactive (1) or non-interactive (0).
 
 ### Step 4: Initial Data Sharing
 
-On the respective machines, `cd` into `mpc/code/` and run `MaskDnn`
+On the respective machines, `cd` into `mpc/code/` and run `Mask`
 for each party in the following order:
 
-- CP0: `bin/MaskDnn 0 ../par/test.par.0.txt`
-- CP1: `bin/MaskDnn 1 ../par/test.par.1.txt`
-- CP2: `bin/MaskDnn 2 ../par/test.par.2.txt`
-- SP:  `bin/MaskDnn 3 ../par/test.par.3.txt ../test_data/`
+- CP0: `bin/Mask 0 ../par/test.par.0.txt`
+- CP1: `bin/Mask 1 ../par/test.par.1.txt`
+- CP2: `bin/Mask 2 ../par/test.par.2.txt`
+- SP:  `bin/Mask 3 ../par/test.par.3.txt ../test_data/`
 
 During this step, SP computes the secret shares with CP1 and CP2.
 The resulting shares are stored in the same directory as the
@@ -145,12 +149,12 @@ sharing protocol such as FTP.
 
 ### Step 5: Secure DTI Prediction
 
-On the respective machines, `cd` into `mpc/code/` and run `DnnClient`
+On the respective machines, `cd` into `mpc/code/` and run `Client`
 for each party (excluding SP) in the following order:
 
-- CP0: `bin/DnnClient 0 ../par/test.par.0.txt`
-- CP1: `bin/DnnClient 1 ../par/test.par.1.txt`
-- CP2: `bin/DnnClient 2 ../par/test.par.2.txt`
+- CP0: `bin/Client 0 ../par/test.par.0.txt`
+- CP1: `bin/Client 1 ../par/test.par.1.txt`
+- CP2: `bin/Client 2 ../par/test.par.2.txt`
 
 As the model runs, it will output the current model parameters in
 plaintext in the `mpc/cache/` directory. This can be modified to only
