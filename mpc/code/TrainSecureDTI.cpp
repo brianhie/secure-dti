@@ -451,7 +451,7 @@ void model_update(Mat<ZZ_p>& X, Mat<ZZ_p>& y,
   }
 }
 
-bool dnn_protocol(MPCEnv& mpc, int pid) {
+bool dti_protocol(MPCEnv& mpc, int pid) {
   /* Initialize threads. */
   SetNumThreads(Param::NUM_THREADS);
   tcout() << AvailableThreads() << " threads created" << endl;
@@ -542,7 +542,7 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  bool success = dnn_protocol(mpc, pid);
+  bool success = dti_protocol(mpc, pid);
 
   // This is here just to keep P0 online until the end for data transfer
   // In practice, P0 would send data in advance before each phase and go offline
