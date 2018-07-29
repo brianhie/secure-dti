@@ -14,8 +14,8 @@ NUM_THREADS 20
 
 # DTI
 FEATURE_RANK 6903
-FEATURES_FILE ../../data/batch/X
-LABELS_FILE ../../data/batch/y
+FEATURES_FILE ../../data/batch_pw/X
+LABELS_FILE ../../data/batch_pw/y
 PROFILER 1
 
 # FILES

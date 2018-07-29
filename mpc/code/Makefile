@@ -1,6 +1,6 @@
 CPP = g++
 INCPATHS = -I/usr/bin/include -Iinclude
-CFLAGS = -g -Wall -O1 $(INCPATHS) -march=native -std=c++11 -pthread -Wno-sign-compare
+CFLAGS = -g -Wall -O1 $(INCPATHS) -march=native -std=c++17 -pthread -Wno-sign-compare
 LDLIBS = -lssl -lcrypto -lntl -lgmp -lm -ldl
 LDPATH = -Llib -L/usr/local/lib 
 

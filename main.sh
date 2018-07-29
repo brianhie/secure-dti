@@ -28,7 +28,7 @@ cd code/
 ./bin/Mask 0 ../par/test.par.0.txt &
 ./bin/Mask 1 ../par/test.par.1.txt &
 ./bin/Mask 2 ../par/test.par.2.txt &
-./bin/Mask 3 ../par/test.par.3.txt ../../data/batch/ &
+./bin/Mask 3 ../par/test.par.3.txt ../../data/batch_pw/ &
 wait
 
 # Run protocol.

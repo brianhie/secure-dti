@@ -19,8 +19,8 @@ bool mask_matrix(string data_dir, MPCEnv& mpc, string name,
   string fname = data_dir + name;
   ifstream fin(fname.c_str());
   if (!fin.is_open()) {
-    tcout() << "Error: could not open " << fname << endl;
-    return false;
+    tcout() << "Warning: could not open " << fname << endl;
+    return true;
   }
 
   /* Read in matrix. */
@@ -65,7 +65,6 @@ bool mask_matrix(string data_dir, MPCEnv& mpc, string name,
 }
 
 bool mask_data(string data_dir, MPCEnv& mpc) {
-  
   /* Create list of suffixes. */
   vector<string> s1 = { "a", "b", "c"};
   vector<string> s2;
@@ -87,6 +86,9 @@ bool mask_data(string data_dir, MPCEnv& mpc) {
   fstream fs;
   string fname;
   for (int i = 0; i < suffixes.size(); i++) {
+    cout << "seed" + suffixes[i] << endl;
+    if (i > 0)
+      break;
     
     /* Save seed state to file for each batch. */
     fname = cache(1, "seed" + suffixes[i]);
@@ -163,6 +165,7 @@ int main(int argc, char* argv[]) {
   /* Mask the data and save to file. */
   bool success = true;  
   if (pid == 3) {
+    assert(false);
     success = mask_data(data_dir, mpc);
     if (!success) {
       tcout() << "Data masking failed." << endl;
