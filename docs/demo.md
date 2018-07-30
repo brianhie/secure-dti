@@ -1,5 +1,7 @@
 # Secure DTI Demo
 
+This tutorial walks through the steps outlined in `demo.sh` and gives a good overview of all stages of the Secure DTI pipeline. Read on!
+
 ## Data set
 
 We created a very small drug-target interaction data set by subsampling three very different drug targets from the much larger [STITCH data set](http://stitch.embl.de/): ABL1, a tyrosine kinase target for chronic myeloid leukemia; HMGCR, the rate limiting enzyme in cholesterol synthesis; and OPRM1, the mu 1 opioid receptor.
@@ -16,7 +18,7 @@ demo_data/
 
 ## Prepare data for input to neural network algorithm
 
-We want to balance our positive interactions with equal number of drug-target pairs that are not interactive (our negative set). To do this, we can randomly pair drugs and targets without positive interactions.
+We want to balance our positive interactions with an equal number of drug-target pairs that are not interactive (our negative set). To do this, we can randomly pair drugs and targets and assume they do not interact (which is true most of the time).
 
 To generate a better negative set, we can also preserve the degree distributions of the drugs/targets, so that a drug or a target is equally represented in the negative set as it is in the positive set. This helps prevent a model from, e.g., simply learning to label as positive any drug-target pair with a drug that is frequently seen in the positive set but rarely seen in the negative set.
 
@@ -39,6 +41,7 @@ This will treat the first 150 drug-target pairs as the training set (75% of all 
 
 We are ready to start with the multiparty computation (MPC) portion of the pipeline! Change directories into `mpc/code/` and generate random keys for secret sharing:
 ```
+cd mpc/code/
 ./bin/GenerateKey ../key/P0_P1.key
 ./bin/GenerateKey ../key/P0_P2.key
 ./bin/GenerateKey ../key/P1_P2.key
@@ -60,7 +63,7 @@ wait
 
 Where the id 3 refers to SP, 1 and 2 are CP1 and CP2 that handle the main computation, and 0 refers to CP0, a disinterested third party. Technically, we'd have multiple parties contributing data, but for demonstration purposes we just have a single data contributer (i.e., SP).
 
-The process for the SP should generate "masked" files in `../../demo_data/batch_pw/` that contained blinded the blinded drug-target pairs that can be sent to CP1 using some kind of file transfer protocol (e.g., `ftp`). CP2 will in turn reconstruct its share of the data using the seed files saved in `mpc/cache/` (in this case, `test_seedtrain.bin`). Again, these should technically be distributed across multiple parties, but in this demo they are all on the same machine and file system.
+The process for the SP should generate "masked" files in `../../demo_data/batch_pw/` that contain the blinded drug-target pairs that can be sent to CP1 using some kind of file transfer protocol (e.g., `ftp`). CP2 will in turn reconstruct its share of the data using the seed files saved in `mpc/cache/` (in this case, `test_seedtrain.bin`). Again, these should technically be distributed across multiple parties, but in this demo they are all on the same machine and file system.
 
 ## Train the model
 
@@ -104,8 +107,8 @@ Testing accuracy:
 2018-07-29 23:40:09.661240 | Avg. precision: 0.96
 ```
 
-The report gives various metrics for gauging classification accuracy. These might vary a little bit depending on the (pseudo)random assignment of drug-target pairs to the training or test sets, but in general the training and testing accuracy should be close to 100%.
+The report gives various metrics for gauging classification accuracy. The values might vary a little bit depending on the (pseudo)random assignment of drug-target pairs to the training or test sets, but in general the training and testing accuracy should be close to 100%.
 
 In the above case, the model learned to perfectly classify the training set and was very close to perfectly classifying the test data, even though it had not seen those interactions previously. The model was able to learn from the data, while keeping everything private throughout the model training process!
 
-Hopefully this gives you a better idea of how the entire Secure DTI pipeline works. The main README gives instructions on how to run the pipeline on the full STITCH data set with many more drug-target pairs, and the pipeline can also be run on other DTI data sets as well.
+Hopefully this gives you a better idea of how the entire Secure DTI pipeline works. The main README gives instructions on how to run the pipeline on the full STITCH data set with many more drug-target pairs, and the pipeline can also be run on other data sets as well through more or less the same process.
