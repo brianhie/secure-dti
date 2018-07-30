@@ -45,7 +45,7 @@ This will create three executables of interest:
 
 ### Run a small demo:
 
-Before running on a large data set with more than a million interactions, we'd encourage you to [check out our demo](docs/demo.md) where we walk through the pipeline step-by-step.
+**Before running on a large data set with more than a million interactions, we'd encourage you to [check out our demo](docs/demo.md) where we walk through the pipeline step-by-step.**
 
 For instructions on running on the full STITCH data set, keep reading!
 
