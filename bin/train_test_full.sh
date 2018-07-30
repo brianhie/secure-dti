@@ -1,5 +1,6 @@
 ls $1 | \
     grep -v masked | \
+    grep -v pickle | \
     grep X | \
     sed 's/X//' | \
     head -n65 \
@@ -7,6 +8,7 @@ ls $1 | \
 
 ls $1 | \
     grep -v masked | \
+    grep -v pickle | \
     grep X | \
     sed 's/X//' | \
     tail -n+66 \

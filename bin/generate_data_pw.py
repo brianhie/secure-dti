@@ -60,10 +60,11 @@ if __name__ == '__main__':
     interact_fname = sys.argv[1]
     chem_fname = sys.argv[2]
     prot_fname = sys.argv[3]
+    dir_name = sys.argv[4].rstrip('/')
     
     divchem = False
-    if len(sys.argv) >= 5:
-        if sys.argv[4].lower() == 'divchem':
+    if len(sys.argv) >= 6:
+        if sys.argv[5].lower() == 'divchem':
             divchem = True
             
     chems = load_chems(chem_fname)
@@ -73,8 +74,8 @@ if __name__ == '__main__':
     shuffled = interactions[:]
     int_set = set([ (c, p) for c, p, _ in interactions ])
 
-    X_file = open('X.txt', 'w')
-    y_file = open('y.txt', 'w')
+    X_file = open(dir_name + '/X.txt', 'w')
+    y_file = open(dir_name + '/y.txt', 'w')
 
     n = len(interactions)
 

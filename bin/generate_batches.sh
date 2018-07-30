@@ -15,9 +15,8 @@ cat "$1"data/stitch/large_interactions.txt | \
 python bin/generate_data.py \
        "$1"data/stitch/large_interactions_uniq.txt \
        "$1"data/stitch/filtered_chem.txt \
-       "$1"data/stitch/ensp_to_bitvec.txt
-mv X.txt "$1"data/
-mv y.txt "$1"data/
+       "$1"data/stitch/ensp_to_bitvec.txt \
+       "$1"data/
 
 mkdir -p "$1"data/batch
 
