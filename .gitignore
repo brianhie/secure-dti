@@ -1,8 +1,8 @@
 data*
-mpc/code/bin/
-mpc/code/build/
-mpc/cache/
-mpc/key/
+mpc/code/bin/*
+mpc/code/build/*
+mpc/cache/*
+mpc/key/*
 *.pyc
 *~
 *#
