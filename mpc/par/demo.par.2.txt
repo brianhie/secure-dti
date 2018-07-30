@@ -17,10 +17,10 @@ NUM_THREADS 20
 
 # DTI
 FEATURE_RANK 6903
-FEATURES_FILE ../../data/batch_pw/X
-LABELS_FILE ../../data/batch_pw/y
-TRAIN_SUFFIXES ../../data/batch_pw/train_suffixes.txt
-TEST_SUFFIXES ../../data/batch_pw/test_suffixes.txt
+FEATURES_FILE ../../demo_data/batch_pw/X
+LABELS_FILE ../../demo_data/batch_pw/y
+TRAIN_SUFFIXES ../../demo_data/batch_pw/train_suffixes.txt
+TEST_SUFFIXES ../../demo_data/batch_pw/test_suffixes.txt
 PROFILER 1
 
 # DEMO.

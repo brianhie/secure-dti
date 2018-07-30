@@ -36,3 +36,5 @@ cd mpc/code/
 ./bin/TrainSecureDTI 1 ../par/demo.par.1.txt &
 ./bin/TrainSecureDTI 2 ../par/demo.par.2.txt &
 wait
+
+python bin/evaluate_demo.py

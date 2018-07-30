@@ -1,5 +1,4 @@
 ls $1 | \
-    grep -v pickle | \
     grep -v masked | \
     grep X | \
     sed 's/X//' | \
@@ -7,7 +6,6 @@ ls $1 | \
          > $1/train_suffixes.txt
 
 ls $1 | \
-    grep -v pickle | \
     grep -v masked | \
     grep X | \
     sed 's/X//' | \

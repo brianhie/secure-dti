@@ -95,17 +95,17 @@ def load_model():
 if __name__ == '__main__':
     W, b, act = load_model()
 
-    X_train = np.genfromtxt('data/batch_pw/Xtrain',
+    X_train = np.genfromtxt('demo_data/batch_pw/Xtrain',
                             delimiter=1, dtype='float')
-    y_train = np.genfromtxt('data/batch_pw/ytrain',
+    y_train = np.genfromtxt('demo_data/batch_pw/ytrain',
                             delimiter=1, dtype='float')
     
     print('Training accuracy:')
     report_scores(X_train, y_train, W, b, act)
 
-    X_test = np.genfromtxt('data/batch_pw/Xtest',
+    X_test = np.genfromtxt('demo_data/batch_pw/Xtest',
                             delimiter=1, dtype='float')
-    y_test = np.genfromtxt('data/batch_pw/ytest',
+    y_test = np.genfromtxt('demo_data/batch_pw/ytest',
                             delimiter=1, dtype='float')
     
     print('Testing accuracy:')
