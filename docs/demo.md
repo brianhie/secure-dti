@@ -106,6 +106,6 @@ Testing accuracy:
 
 The report gives various metrics for gauging classification accuracy. These might vary a little bit depending on the (pseudo)random assignment of drug-target pairs to the training or test sets, but in general the training and testing accuracy should be close to 100%.
 
-In the above case, the model learned to perfectly classify the training set and was very close to perfectly classifying the test data, even though it had not seen those interactions previously. The model was able to learn from the data (while keeping everything private throughout the model training process)!
+In the above case, the model learned to perfectly classify the training set and was very close to perfectly classifying the test data, even though it had not seen those interactions previously. The model was able to learn from the data, while keeping everything private throughout the model training process!
 
 Hopefully this gives you a better idea of how the entire Secure DTI pipeline works. The main README gives instructions on how to run the pipeline on the full STITCH data set with many more drug-target pairs, and the pipeline can also be run on other DTI data sets as well.
