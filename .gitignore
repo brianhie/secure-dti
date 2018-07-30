@@ -6,3 +6,8 @@ mpc/key/
 *.pyc
 *~
 *#
+
+demo_data/batch_pw/
+demo_data/stitch/
+demo_data/stitch/large_interactions*
+demo_data/*.txt

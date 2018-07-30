@@ -41,8 +41,8 @@ if __name__ == '__main__':
     else:
         opener = open
 
-    X_file = open('data/X.txt', 'w')
-    y_file = open('data/y.txt', 'w')
+    X_file = open('X.txt', 'w')
+    y_file = open('y.txt', 'w')
 
     with opener(interact_fname) as f:
         chem_idx = np.random.choice(range(len(chems.keys())), size=1600000)

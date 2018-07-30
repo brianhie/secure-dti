@@ -73,8 +73,8 @@ if __name__ == '__main__':
     shuffled = interactions[:]
     int_set = set([ (c, p) for c, p, _ in interactions ])
 
-    X_file = open('data/X.txt', 'w')
-    y_file = open('data/y.txt', 'w')
+    X_file = open('X.txt', 'w')
+    y_file = open('y.txt', 'w')
 
     n = len(interactions)
 

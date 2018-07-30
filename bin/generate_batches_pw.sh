@@ -1,6 +1,6 @@
 #!/bin/bash
 
-zcat data/stitch/9606.protein_chemical.links.v5.0.tsv.gz | \
+zcat "$1"data/stitch/9606.protein_chemical.links.v5.0.tsv.gz | \
     tail -n+2 | \
     awk '$3 >= 400' | \
     sed 's/CID[sm]/CIDs/' | \
@@ -8,10 +8,12 @@ zcat data/stitch/9606.protein_chemical.links.v5.0.tsv.gz | \
     shuf \
          > "$1"data/stitch/large_interactions_uniq.txt
 
-python bin/generate_data_pw.py \
-       "$1"data/stitch/large_interactions_uniq.txt \
-       "$1"data/stitch/filtered_chem.txt \
-       "$1"data/stitch/ensp_to_bitvec.txt
+cd "$1"data/
+python ../bin/generate_data_pw.py \
+       ../"$1"data/stitch/large_interactions_uniq.txt \
+       ../"$1"data/stitch/filtered_chem.txt \
+       ../"$1"data/stitch/ensp_to_bitvec.txt
+cd ..
 
 mkdir -p "$1"data/batch_pw
 
