@@ -19,8 +19,8 @@ bool mask_matrix(string data_dir, MPCEnv& mpc, string name,
   string fname = data_dir + name;
   ifstream fin(fname.c_str());
   if (!fin.is_open()) {
-    tcout() << "Warning: could not open " << fname << endl;
-    return true;
+    tcout() << "Error: could not open " << fname << endl;
+    return false;
   }
 
   /* Read in matrix. */
@@ -73,9 +73,6 @@ bool mask_data(string data_dir, MPCEnv& mpc) {
   fstream fs;
   string fname;
   for (int i = 0; i < suffixes.size(); i++) {
-    if (i > 0)
-      break;
-    
     /* Save seed state to file for each batch. */
     fname = cache(1, "seed" + suffixes[i]);
     fs.open(fname.c_str(), ios::out | ios::binary);
