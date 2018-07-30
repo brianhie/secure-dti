@@ -65,28 +65,14 @@ bool mask_matrix(string data_dir, MPCEnv& mpc, string name,
 }
 
 bool mask_data(string data_dir, MPCEnv& mpc) {
-  /* Create list of suffixes. */
-  vector<string> s1 = { "a", "b", "c"};
-  vector<string> s2;
-  for (char ch = 'a'; ch <= 'z'; ch++) {
-    s2.push_back(string(1, ch));
-  }
   vector<string> suffixes;
-  for (int i = 0; i < s1.size(); i++) {
-    for (int j = 0; j < s2.size(); j++) {
-      if (s1[i][0] == 'c' && s2[j][0] > 'm') {
-        continue;
-      }
-      suffixes.push_back(s1[i] + s2[j]);
-    }
-  }
+  suffixes = load_suffixes(Param::TRAIN_SUFFIXES);
   
   mpc.SwitchSeed(1); /* Use CP1's seed. */
 
   fstream fs;
   string fname;
   for (int i = 0; i < suffixes.size(); i++) {
-    cout << "seed" + suffixes[i] << endl;
     if (i > 0)
       break;
     
@@ -165,7 +151,6 @@ int main(int argc, char* argv[]) {
   /* Mask the data and save to file. */
   bool success = true;  
   if (pid == 3) {
-    assert(false);
     success = mask_data(data_dir, mpc);
     if (!success) {
       tcout() << "Data masking failed." << endl;

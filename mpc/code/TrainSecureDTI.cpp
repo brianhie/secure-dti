@@ -257,7 +257,7 @@ void gradient_descent(Mat<ZZ_p>& X, Mat<ZZ_p>& y,
   dscores *= norm_examples;
   mpc.Trunc(dscores);
 
-  if (pid > 0 && epoch % 100 == 0) {
+  if (pid > 0 && epoch % 500 == 0) {
     reveal(scores, cache(pid, "scores_epoch" + to_string(epoch)), mpc);
   }
 
@@ -423,35 +423,31 @@ void model_update(Mat<ZZ_p>& X, Mat<ZZ_p>& y,
 
     /* Save state every 500 epochs. */
     if (epoch % 500 == 0) {
-      Mat<ZZ_p> W0, W1, W2;
-      Init(W0, W[0].NumRows(), W[0].NumCols());
-      Init(W1, W[1].NumRows(), W[1].NumCols());
-      Init(W2, W[2].NumRows(), W[2].NumCols());
-      W0 += W[0];
-      W1 += W[1];
-      W2 += W[2];
-      reveal(W0, cache(pid, "W0_" + to_string(epoch)), mpc);
-      reveal(W1, cache(pid, "W1_" + to_string(epoch)), mpc);
-      reveal(W2, cache(pid, "W2_" + to_string(epoch)), mpc);
-
-      Vec<ZZ_p> b0, b1, b2;
-      Init(b0, b[0].length());
-      Init(b1, b[1].length());
-      Init(b2, b[2].length());
-      b0 += b[0];
-      b1 += b[1];
-      b2 += b[2];
-      reveal(b0, cache(pid, "b0_" + to_string(epoch)), mpc);
-      reveal(b1, cache(pid, "b1_" + to_string(epoch)), mpc);
-      reveal(b2, cache(pid, "b2_" + to_string(epoch)), mpc);
+      for (int l = 0; l < Param::N_HIDDEN + 1; l++) {
+        Mat<ZZ_p> W_out;
+        Init(W_out, W[l].NumRows(), W[l].NumCols());
+        W_out += W[l];
+        reveal(W_out, cache(pid, "W" + to_string(l) + "_" +
+                            to_string(epoch)), mpc);
+        
+        Vec<ZZ_p> b_out;
+        Init(b_out, b[l].length());
+        b_out += b[l];
+        reveal(b_out, cache(pid, "b" + to_string(l) + "_" +
+                            to_string(epoch)), mpc);
+      }
     }
 
     /* Update reference to training epoch. */
     epoch++;
+
+    if (epoch >= Param::MAX_EPOCHS) {
+      break;
+    }
   }
 }
 
-bool dnn_protocol(MPCEnv& mpc, int pid) {
+bool dti_protocol(MPCEnv& mpc, int pid) {
   /* Initialize threads. */
   SetNumThreads(Param::NUM_THREADS);
   tcout() << AvailableThreads() << " threads created" << endl;
@@ -465,20 +461,8 @@ bool dnn_protocol(MPCEnv& mpc, int pid) {
   srand(0);  /* Seed 0 to have deterministic testing. */
 
   /* Create list of training file suffixes. */
-  vector<string> s1 = { "a", "b", "c" };
-  vector<string> s2;
-  for (char ch = 'a'; ch <= 'z'; ch++) {
-    s2.push_back(string(1, ch));
-  }
   vector<string> suffixes;
-  for (int i = 0; i < s1.size(); i++) {
-    for (int j = 0; j < s2.size(); j++) {
-      if (s1[i][0] == 'c' && s2[j][0] > 'm') {
-        continue;
-      }
-      suffixes.push_back(s1[i] + s2[j]);
-    }
-  }
+  suffixes = load_suffixes(Param::TRAIN_SUFFIXES);
 
   /* Initialize data matries. */
   Mat<ZZ_p> X, y;
@@ -500,13 +484,17 @@ bool dnn_protocol(MPCEnv& mpc, int pid) {
   }
   
   if (pid > 0) {
-    reveal(W[2], cache(pid, "backW2"), mpc);
-    reveal(W[1], cache(pid, "backW1"), mpc);
-    reveal(W[0], cache(pid, "backW0"), mpc);
-
-    reveal(b[2], cache(pid, "backb2"), mpc);
-    reveal(b[1], cache(pid, "backb1"), mpc);
-    reveal(b[0], cache(pid, "backb0"), mpc);
+    for (int l = 0; l < Param::N_HIDDEN + 1; l++) {
+      Mat<ZZ_p> W_out;
+      Init(W_out, W[l].NumRows(), W[l].NumCols());
+      W_out += W[l];
+      reveal(W_out, cache(pid, "W" + to_string(l) + "_final"), mpc);
+        
+      Vec<ZZ_p> b_out;
+      Init(b_out, b[l].length());
+      b_out += b[l];
+      reveal(b_out, cache(pid, "b" + to_string(l) + "_final"), mpc);
+    }
   }
   
   return true;
@@ -542,7 +530,7 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  bool success = dnn_protocol(mpc, pid);
+  bool success = dti_protocol(mpc, pid);
 
   // This is here just to keep P0 online until the end for data transfer
   // In practice, P0 would send data in advance before each phase and go offline

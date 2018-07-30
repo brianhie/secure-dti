@@ -94,6 +94,10 @@ bool Param::ParseFile(const char *param_file) {
       ret = Convert(v, Param::FEATURES_FILE, k);
     } else if (k == "LABELS_FILE") {
       ret = Convert(v, Param::LABELS_FILE, k);
+    } else if (k == "TRAIN_SUFFIXES") {
+      ret = Convert(v, Param::TRAIN_SUFFIXES, k);
+    } else if (k == "TEST_SUFFIXES") {
+      ret = Convert(v, Param::TEST_SUFFIXES, k);
     } else if (k == "N_CLASSES") {
       ret = Convert(v, Param::N_CLASSES, k);
     } else if (k == "N_HIDDEN") {
@@ -171,6 +175,8 @@ int Param::MAX_EPOCHS = 20000;
 
 string Param::FEATURES_FILE = "../test_data/features_masked.bin";
 string Param::LABELS_FILE = "../test_data/labels_masked.bin";
+string Param::TRAIN_SUFFIXES = "../test_data/train_suffixes.txt";
+string Param::TEST_SUFFIXES = "../test_data/test_suffixes.txt";
 
 long Param::DIV_MAX_N = 100000;
 long Param::PITER_BATCH_SIZE = 100;

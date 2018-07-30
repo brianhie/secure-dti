@@ -12,27 +12,29 @@ tar xvf data.tar.gz
 sh bin/generate_batches.sh # Randomly sample negative set (Secure DTI-A).
 sh bin/generate_batches_pw.sh # Control for degree (Secure DTI-B).
 
-cd mpc/
+# Split into train and test.
+sh bin/train_test_full.sh data/batch
+sh bin/train_test_full.sh data/batch_pw
+
+cd mpc/code
 
 # Generate keys for secret sharing.
-code/bin/GenerateKey key/P0_P1.key
-code/bin/GenerateKey key/P0_P2.key
-code/bin/GenerateKey key/P1_P2.key
-code/bin/GenerateKey key/P1_P3.key
-code/bin/GenerateKey key/P2_P3.key
-code/bin/GenerateKey key/global.key
-
-cd code/
+./bin/GenerateKey ../key/P0_P1.key
+./bin/GenerateKey ../key/P0_P2.key
+./bin/GenerateKey ../key/P1_P2.key
+./bin/GenerateKey ../key/P1_P3.key
+./bin/GenerateKey ../key/P2_P3.key
+./bin/GenerateKey ../key/global.key
 
 # Mask data.
-./bin/Mask 0 ../par/test.par.0.txt &
-./bin/Mask 1 ../par/test.par.1.txt &
-./bin/Mask 2 ../par/test.par.2.txt &
-./bin/Mask 3 ../par/test.par.3.txt ../../data/batch_pw/ &
+./bin/ShareData 0 ../par/test.par.0.txt &
+./bin/ShareData 1 ../par/test.par.1.txt &
+./bin/ShareData 2 ../par/test.par.2.txt &
+./bin/ShareData 3 ../par/test.par.3.txt ../../data/batch_pw/ &
 wait
 
 # Run protocol.
-./bin/Client 0 ../par/test.par.0.txt &
-./bin/Client 1 ../par/test.par.1.txt &
-./bin/Client 2 ../par/test.par.2.txt &
+./bin/TrainSecureDTI 0 ../par/test.par.0.txt &
+./bin/TrainSecureDTI 1 ../par/test.par.1.txt &
+./bin/TrainSecureDTI 2 ../par/test.par.2.txt &
 wait
