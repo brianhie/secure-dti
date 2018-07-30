@@ -43,7 +43,13 @@ This will create three executables of interest:
 - `bin/ShareData`
 - `bin/TrainSecureDTI`
 
-### How to run:
+### Run a small demo:
+
+Before running on a large data set with more than a million interactions, we'd encourage you to [check out our demo](docs/demo.md) where we walk through the pipeline step-by-step.
+
+For instructions on running on the full STITCH data set, keep reading!
+
+### Run on full STITCH 5.0 dataset:
 
 Our MPC protocol consists of four entities: SP, CP0, CP1, and CP2.
 
