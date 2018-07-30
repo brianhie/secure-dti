@@ -5,8 +5,8 @@
 # to the description in the README.
 
 # Download and unpack data.
-#wget http://secure-dti.csail.mit.edu/data.tar.gz
-#tar xvf data.tar.gz
+wget http://secure-dti.csail.mit.edu/data.tar.gz
+tar xvf data.tar.gz
 
 # Generate data.
 sh bin/generate_batches.sh # Randomly sample negative set (Secure DTI-A).
