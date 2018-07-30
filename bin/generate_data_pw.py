@@ -3,8 +3,8 @@ import numpy as np
 import random
 import sys
 
-np.random.seed(0)
-random.seed(0)
+np.random.seed(10)
+random.seed(10)
 
 BINARY_SCORE=True
 
@@ -102,11 +102,11 @@ if __name__ == '__main__':
             # Ensure that negative examples really are negative.
             if not (c2, p2) in int_set:
                 break
-            if n_collisions > 100:
+            if n_collisions > 20:
                 break
             n_collisions += 1
             
-        if n_collisions > 100:
+        if n_collisions > 20:
             sys.stderr.write('WARNING: Exceeded collision threshold.\n')
             continue
 
