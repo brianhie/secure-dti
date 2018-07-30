@@ -1,10 +1,10 @@
 # Secure DTI Demo
 
-This tutorial walks through the steps outlined in `demo.sh` and gives a good overview of all stages of the Secure DTI pipeline. Read on!
+This tutorial walks through the steps outlined in `demo.sh` and gives an overview of all stages of the Secure DTI pipeline.
 
 ## Data set
 
-We created a very small drug-target interaction data set by subsampling three very different drug targets from the much larger [STITCH data set](http://stitch.embl.de/): ABL1, a tyrosine kinase target for chronic myeloid leukemia; HMGCR, the rate limiting enzyme in cholesterol synthesis; and OPRM1, the mu 1 opioid receptor.
+We created a small drug-target interaction data set based on three different drug targets from the [STITCH data set](http://stitch.embl.de/): ABL1, a tyrosine kinase target for chronic myeloid leukemia; HMGCR, the rate limiting enzyme in cholesterol synthesis; and OPRM1, the mu 1 opioid receptor.
 
 For each of the above targets, we picked 33 chemicals (34 for ABL1) with the most confident interactions to get to 100 total positive interactions. This data is put in `demo_data`:
 
@@ -16,9 +16,9 @@ demo_data/
     └── filtered_chem.txt
 ```
 
-## Prepare data for input to neural network algorithm
+## Prepare data for neural network training
 
-We want to balance our positive interactions with an equal number of drug-target pairs that are not interactive (our negative set). To do this, we can randomly pair drugs and targets and assume they do not interact (which is true most of the time).
+We want to balance our positive interactions with an equal number of drug-target pairs that do not interact (our negative set). To do this, we can randomly pair drugs and targets and assume they do not interact (which is true most of the time).
 
 To generate a better negative set, we can also preserve the degree distributions of the drugs/targets, so that a drug or a target is equally represented in the negative set as it is in the positive set. This helps prevent a model from, e.g., simply learning to label as positive any drug-target pair with a drug that is frequently seen in the positive set but rarely seen in the negative set.
 
@@ -27,9 +27,9 @@ We can generate such a negative set with the command:
 sh bin/generate_batches_pw.sh demo_
 ```
 
-This will create files `demo_data/X.txt` and `demo_data/y.txt` with the positive interactions randomly shuffled and equally balanced with negative interactions that preserve the representation of drugs and targets.
+This will create files `demo_data/X.txt` and `demo_data/y.txt` with the positive interactions randomly shuffled and equally balanced with negative interactions that preserve the representation of drugs and targets. Note that the naive uniform sampling approach is also provided in ``bin/generate_batches_pw.sh``.
 
-We can also split this into training data (that the model sees) and testing data (that the model doesn't see). We do this with the command:
+Next, we split our data into training and test data using the command:
 ```
 sh bin/train_test_demo.sh
 ```
@@ -50,7 +50,7 @@ cd mpc/code/
 ./bin/GenerateKey ../key/global.key
 ```
 
-These will be useful for making communication between the different parties more efficient throughout the procedure. Technically, these keys should be distributed across multiple computing parties on multiple machines, but for demonstration purposes we are just keeping them on one machine for now.
+These keys are used to secure the communication between pairs of computing parties and also to set up shared pseudorandom number generators that make our protocols more efficient. Technically, each of these keys should be generated and owned by only the relevant computing parties, but for demonstration purposes we are just keeping them on one machine for now.
 
 Now, we share the underlying drug-target pairs from the SP to the CPs:
 ```
@@ -61,13 +61,13 @@ Now, we share the underlying drug-target pairs from the SP to the CPs:
 wait
 ```
 
-Where the id 3 refers to SP, 1 and 2 are CP1 and CP2 that handle the main computation, and 0 refers to CP0, a disinterested third party. Technically, we'd have multiple parties contributing data, but for demonstration purposes we just have a single data contributer (i.e., SP).
+Where the id 3 refers to SP, 1 and 2 are CP1 and CP2 that handle the main computation, and 0 refers to CP0, an auxiliary party we introduce for precomputation. In practice, we may have multiple parties contributing data (perhaps the CPs themselves), but here we work with a single data contributor (i.e., SP) for simplicity.
 
-The process for the SP should generate "masked" files in `../../demo_data/batch_pw/` that contain the blinded drug-target pairs that can be sent to CP1 using some kind of file transfer protocol (e.g., `ftp`). CP2 will in turn reconstruct its share of the data using the seed files saved in `mpc/cache/` (in this case, `test_seedtrain.bin`). Again, these should technically be distributed across multiple parties, but in this demo they are all on the same machine and file system.
+The process for the SP generates "masked" files in `../../demo_data/batch_pw/` that contain the blinded drug-target pairs that can be sent to CP1 using some kind of file transfer protocol (e.g., `ftp`). On the other hand, CP2 reconstructs its share of the data using the seed files saved in `mpc/cache/` (in this case, `test_seedtrain.bin`). Again, these should technically be distributed across multiple machines, but in this demo they are all on the same machine, which allows us to skip this file transfer step.
 
 ## Train the model
 
-We are now read to train the neural network! That can be done with the commands:
+We are now ready to train the neural network! That can be done with the commands:
 ```
 ./bin/TrainSecureDTI 0 ../par/demo.par.0.txt &
 ./bin/TrainSecureDTI 1 ../par/demo.par.1.txt &
@@ -75,11 +75,11 @@ We are now read to train the neural network! That can be done with the commands:
 wait
 ```
 
-This will update a small multilayer perceptron neural network via backpropagation and stochastic gradient descent, while keeping the underlying data secret shared. This will run for around 15 minutes, during which the model will automatically learn to classify drug-target interactions from non-interactive drug-target pairs.
+This will train a simple feedforward neural network via stochsatic gradient descent to classify drug-target interactions from non-interactive drug-target pairs, while keeping the underlying data private. On our machine, this process completes in around 15 minutes.
 
 ## Evaluate the model
 
-When model training is done, it will save the parameters in plaintext to `mpc/cache/`, which can then be used to evaluate the classification performance of the algorithm on both the training set and the test set.
+When model training is done, it will save the parameters in plaintext to `mpc/cache/`, which can then be used to evaluate the classification performance of the algorithm on both the training set and the test set. In practice, the trained model may be saved as secret shares to allow even the prediction of novel interactions to be performed in a privacy-preserving manner. 
 
 Change back into the main directory and evaluate the model with the commands:
 ```
@@ -109,6 +109,6 @@ Testing accuracy:
 
 The report gives various metrics for gauging classification accuracy. The values might vary a little bit depending on the (pseudo)random assignment of drug-target pairs to the training or test sets, but in general the training and testing accuracy should be close to 100%.
 
-In the above case, the model learned to perfectly classify the training set and was very close to perfectly classifying the test data, even though it had not seen those interactions previously. The model was able to learn from the data, while keeping everything private throughout the model training process!
+In the above case, the trained model achieves near-perfect classification on the test data. The model was able to learn from the training data, while keeping everything private throughout the entire training procedure!
 
-Hopefully this gives you a better idea of how the entire Secure DTI pipeline works. The main README gives instructions on how to run the pipeline on the full STITCH data set with many more drug-target pairs, and the pipeline can also be run on other data sets as well through more or less the same process.
+This concludes our demonstration of Secure DTI pipeline on a small data set. The main README gives instructions on how to run the pipeline on the full STITCH data set with many more drug-target pairs. Our pipeline can also be easily applied to other data sets.
