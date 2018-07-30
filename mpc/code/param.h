@@ -62,6 +62,8 @@ class Param {
     static int N_FILE_BATCH;
     static string FEATURES_FILE;
     static string LABELS_FILE;
+    static string TRAIN_SUFFIXES;
+    static string TEST_SUFFIXES;
     static int ITER_PER_EVAL;
     
     /* Software parameters */

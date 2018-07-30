@@ -7,8 +7,10 @@
 #include "NTL/mat_ZZ_p.h"
 
 #include <ctime>
+#include <fstream>
 #include <iostream>
 #include <stdio.h>
+#include <vector>
 
 using namespace std;
 using namespace NTL;
@@ -318,6 +320,26 @@ static inline ostream& tcout() {
   char *time_str = asctime(timeinfo);
   time_str[strnlen(time_str, 27) - 1] = 0;
   return cout << time_str << " | ";
+}
+
+static inline vector<string> load_suffixes(string fname) {
+  ifstream ifs;
+  ifs.open(fname.c_str(), ios::in);
+  if (!ifs.is_open()) {
+    tcout() << "Could not open suffix file: " << fname << endl;
+    return vector<string>();
+  }
+  
+  string line;
+  vector<string> suffixes;
+  
+  while (getline(ifs, line)) {
+    suffixes.push_back(line);
+  }
+
+  ifs.close();
+
+  return suffixes;
 }
 
 #endif

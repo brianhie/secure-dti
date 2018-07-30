@@ -43,7 +43,13 @@ This will create three executables of interest:
 - `bin/ShareData`
 - `bin/TrainSecureDTI`
 
-### How to run:
+### Run a small demo:
+
+**Before running on a large data set with more than a million interactions, we'd encourage you to [check out our demo](docs/demo.md) where we walk through the pipeline step-by-step.**
+
+For instructions on running on the full STITCH data set, keep reading!
+
+### Run on full STITCH 5.0 dataset:
 
 Our MPC protocol consists of four entities: SP, CP0, CP1, and CP2.
 
@@ -70,6 +76,8 @@ value of 1) or not (0).
 The `bin/generate_batches.sh` helper script will take drug-target
 interactions and map them to the corresponding bitvectors. The data
 is split up into file batches of 20,000 training examples each.
+
+Note that `bin/generate_batches.sh` does not control for the degree of proteins/chemicals in the negative set ("Secure DTI-A" in the paper), whereas `bin/generate_batches_pw.sh` does ("Secure DTI-B").
 
 ### Step 1: Setup Shared Random Keys
 
@@ -122,11 +130,9 @@ This contains DTI data from [STITCH 5.0](http://stitch.embl.de/), one-hot encode
 
 On the machine where the SP instance will be running, the data set
 should be available in plaintext. The data should have been split up
-into multiple file batches as by `bin/generate_batches.sh`. The
+into multiple file batches as by `bin/generate_batches.sh` and `bin/generate_batches_pw.sh`. The
 directory prefix of these file batches can be specified using the
 `FEATURES_FILE` and `LABELS_FILE` parameters.
-
-Note that `bin/generate_batches.sh` does not control for the degree of proteins/chemicals in the negative set ("Secure DTI-A" in the paper), whereas `bin/generate_batches_pw.sh` does ("Secure DTI-B").
 
 Each row of the `FEATURES_FILE` should contain the feature vector for
 a drug-target pair. The `LABELS_FILE` will label the drug-target pair

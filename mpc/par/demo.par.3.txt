@@ -12,9 +12,10 @@ BASE_P 1461501637330902918203684832716283019655932542929
 MPC_BUF_SIZE 2000000000
 
 # DTI
-TRAIN_SUFFIXES ../../data/batch_pw/train_suffixes.txt
-TEST_SUFFIXES ../../data/batch_pw/test_suffixes.txt
+TRAIN_SUFFIXES ../../demo_data/batch_pw/train_suffixes.txt
+TEST_SUFFIXES ../../demo_data/batch_pw/test_suffixes.txt
 FEATURE_RANK 6903
+N_FILE_BATCH 150
 
 # FILES
 KEY_PATH ../key/
