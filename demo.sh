@@ -27,6 +27,9 @@ cd mpc/code/
 ./bin/ShareData 3 ../par/demo.par.3.txt ../../demo_data/batch_pw/ &
 wait
 
+# Wait for system ports to settle down.
+sleep 100
+
 # Run protocol.
 ./bin/TrainSecureDTI 0 ../par/demo.par.0.txt &
 ./bin/TrainSecureDTI 1 ../par/demo.par.1.txt &
