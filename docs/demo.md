@@ -27,7 +27,7 @@ We can generate such a negative set with the command:
 sh bin/generate_batches_pw.sh demo_
 ```
 
-This will create files `demo_data/X.txt` and `demo_data/y.txt` with the positive interactions randomly shuffled and equally balanced with negative interactions that preserve the representation of drugs and targets. Note that the naive uniform sampling approach is also provided in ``bin/generate_batches_pw.sh``.
+This will create files `demo_data/X.txt` and `demo_data/y.txt` with the positive interactions randomly shuffled and equally balanced with negative interactions that preserve the representation of drugs and targets. Note that the naive uniform sampling approach is also provided in ``bin/generate_batches.sh``.
 
 Next, we split our data into training and test data using the command:
 ```
@@ -35,7 +35,6 @@ sh bin/train_test_demo.sh
 ```
 
 This will treat the first 150 drug-target pairs as the training set (75% of all pairs) and the last 50 pairs as the test set (25%). These files can be found in `demo_data/batch_pw/` and are called `Xtrain`, `ytrain`, `Xtest`, and `ytest`.
-
 
 ## Secret share the input data
 
@@ -75,7 +74,7 @@ We are now ready to train the neural network! That can be done with the commands
 wait
 ```
 
-This will train a simple feedforward neural network via stochsatic gradient descent to classify drug-target interactions from non-interactive drug-target pairs, while keeping the underlying data private. On our machine, this process completes in around 15 minutes.
+This will train a simple feedforward neural network via stochastic gradient descent to classify drug-target interactions from non-interactive drug-target pairs, while keeping the underlying data private. On our machine, this process completes in around 15 minutes.
 
 ## Evaluate the model
 
@@ -107,7 +106,7 @@ Testing accuracy:
 2018-07-29 23:40:09.661240 | Avg. precision: 0.96
 ```
 
-The report gives various metrics for gauging classification accuracy. The values might vary a little bit depending on the (pseudo)random assignment of drug-target pairs to the training or test sets, but in general the training and testing accuracy should be close to 100%.
+The report gives various metrics for gauging classification accuracy. The values might vary a little bit depending on the (pseudo)random assignment of drug-target pairs to the training or test sets and on different random neural network initializations, but in general the training and testing accuracy should be close to 100%.
 
 In the above case, the trained model achieves near-perfect classification on the test data. The model was able to learn from the training data, while keeping everything private throughout the entire training procedure!
 

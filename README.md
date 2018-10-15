@@ -8,7 +8,7 @@ Once all of the data is downloaded and the code is built, the file `main.sh` doc
 
 ### Run a small demo
 
-**Before running on a large data set with more than a million interactions, we'd encourage you to [check out our demo](docs/demo.md) where we walk through the pipeline step-by-step.**
+Before running on a large data set with more than a million interactions, **we'd encourage you to [check out our demo](docs/demo.md)** where we walk through the pipeline step-by-step.
 
 ## Setup
 
