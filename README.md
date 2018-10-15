@@ -6,7 +6,13 @@ This package contains the client software for an end-to-end multiparty computati
 
 Once all of the data is downloaded and the code is built, the file `main.sh` documents the entire work flow.
 
-### Dependencies:
+### Run a small demo
+
+**Before running on a large data set with more than a million interactions, we'd encourage you to [check out our demo](docs/demo.md) where we walk through the pipeline step-by-step.**
+
+## Setup
+
+### Dependencies
 
 - clang++ compiler (3.9; https://clang.llvm.org/)
 - GMP library (6.1.2; https://gmplib.org/)
@@ -15,7 +21,7 @@ Once all of the data is downloaded and the code is built, the file `main.sh` doc
 
 Code has been tested on Ubuntu 17.04.
 
-### Notes on NTL:
+### Notes on NTL
 
 We made a few modifications to NTL for our random streams.
 Copy the contents of `mpc/code/NTL_mod/` into the NTL source
@@ -27,7 +33,7 @@ directory as follows before compiling it:
 In addition, we recommend setting `NTL_THREAD_BOOST=on`
 during the configuration of NTL to enable thread-boosting.
 
-### Compilation:
+### Compilation
 
 First, update the paths in `mpc/code/Makefile`:
 
@@ -43,13 +49,7 @@ This will create three executables of interest:
 - `bin/ShareData`
 - `bin/TrainSecureDTI`
 
-### Run a small demo:
-
-**Before running on a large data set with more than a million interactions, we'd encourage you to [check out our demo](docs/demo.md) where we walk through the pipeline step-by-step.**
-
-For instructions on running on the full STITCH data set, keep reading!
-
-### Run on full STITCH 5.0 dataset:
+### Run on full STITCH 5.0 dataset
 
 Our MPC protocol consists of four entities: SP, CP0, CP1, and CP2.
 
