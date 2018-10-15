@@ -47,7 +47,7 @@ This will create three executables of interest:
 
 ### Run a small demo
 
-To get a better understanding of how the pipeline works, "*we'd first encourage you to [check out our demo](docs/demo.md)** where we walk through the pipeline step-by-step on a small dataset.
+To get a better understanding of how the pipeline works, **we'd first encourage you to [check out our demo](docs/demo.md)** where we walk through the pipeline step-by-step on a small dataset.
 
 ### Run on full STITCH 5.0 dataset
 
