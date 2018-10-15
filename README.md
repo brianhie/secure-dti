@@ -6,10 +6,6 @@ This package contains the client software for an end-to-end multiparty computati
 
 Once all of the data is downloaded and the code is built, the file `main.sh` documents the entire work flow.
 
-### Run a small demo
-
-Before running on a large data set with more than a million interactions, **we'd encourage you to [check out our demo](docs/demo.md)** where we walk through the pipeline step-by-step.
-
 ## Setup
 
 ### Dependencies
@@ -48,6 +44,10 @@ This will create three executables of interest:
 - `bin/GenerateKey`
 - `bin/ShareData`
 - `bin/TrainSecureDTI`
+
+### Run a small demo
+
+To get a better understanding of how the pipeline works, "*we'd first encourage you to [check out our demo](docs/demo.md)** where we walk through the pipeline step-by-step on a small dataset.
 
 ### Run on full STITCH 5.0 dataset
 
