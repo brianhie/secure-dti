@@ -2,7 +2,7 @@
 
 ## Realizing private and practical pharmacological collaboration
 
-This package contains the client software for an end-to-end multiparty computation (MPC) protocol for secure DTI prediction.
+This package contains the client software for an end-to-end multiparty computation (MPC) protocol for secure DTI prediction, which is described in the paper ["Realizing private and practical pharmacological collaboration"](http://science.sciencemag.org/content/362/6412/347) by Brian Hie, Hyunghoon Cho, and Bonnie Berger.
 
 Once all of the data is downloaded and the code is built, the file `main.sh` documents the entire work flow.
 
